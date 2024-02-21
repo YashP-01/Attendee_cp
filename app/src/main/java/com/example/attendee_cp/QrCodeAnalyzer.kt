@@ -3,6 +3,7 @@ package com.example.attendee_cp
 import android.graphics.ImageFormat
 import androidx.camera.core.ImageProxy
 import androidx.camera.core.ImageAnalysis
+import androidx.compose.ui.unit.dp
 import com.google.zxing.BarcodeFormat
 import com.google.zxing.BinaryBitmap
 import com.google.zxing.DecodeHintType
