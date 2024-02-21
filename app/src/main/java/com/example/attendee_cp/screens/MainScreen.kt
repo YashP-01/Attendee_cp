@@ -5,6 +5,7 @@ import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
+import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxHeight
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
@@ -63,15 +64,14 @@ fun MainScreen(navController: NavController) {
     ) {
         Card(
             modifier = Modifier
-                .width(200.dp)
-                .height(390.dp)
+                .fillMaxSize()
                 .padding(12.dp),
             shape = RoundedCornerShape(corner = CornerSize(13.dp)),
         ) {
-
             Scaffold(
                 modifier = Modifier
-                    .fillMaxSize(),
+                    .fillMaxWidth()
+                    .height(55.dp),
                 topBar = {
                     TopAppBar(title = {
                         Text(text = "Crowd Connect")
@@ -97,65 +97,46 @@ fun MainScreen(navController: NavController) {
                     text = "Item",
                     modifier = Modifier.padding(16.dp)
                 )
-
-
-                // Top Header...
-//            Column(
-//                modifier = Modifier
-////                .padding(top = 10.dp)
-//                    .shadow(elevation = 5.dp)
-//                    .background(Color.White)
-//                    .height(40.dp)
-//                    .fillMaxWidth(),
-//                verticalArrangement = Arrangement.Center
-//            ) {
-//                Text(
-//                    text = "Crowd Connect", style = MaterialTheme.typography.bodyLarge
-//                )
-//
-//            }
-
-                Column(
-                    modifier = Modifier
-                        .fillMaxHeight()
-                        .width(400.dp)
-                        .padding(15.dp),
-                    verticalArrangement = Arrangement.Top,
-                    horizontalAlignment = Alignment.CenterHorizontally
+                }
+            Column(
+                modifier = Modifier
+                    .fillMaxHeight()
+                    .width(400.dp)
+                    .padding(15.dp),
+                verticalArrangement = Arrangement.Top,
+                horizontalAlignment = Alignment.CenterHorizontally
+            ) {
+                Image(
+                    painter = painterResource(id = R.drawable.qrcode),
+                    contentDescription = "Image",
+                    modifier = Modifier.size(300.dp)
+                )
+                Spacer(modifier = Modifier.height(5.dp))
+                Divider(Modifier.height(3.dp))
+                Spacer(modifier = Modifier.height(5.dp))
+                val sheetState = rememberModalBottomSheetState()
+                var isSheetOpen by rememberSaveable {
+                    mutableStateOf(false)
+                }
+                Button(modifier = Modifier
+                    .fillMaxWidth(),
+                    shape = RectangleShape,
+                    elevation = ButtonDefaults.elevatedButtonElevation(7.dp),
+                    onClick = {
+                        navController.navigate("bottomSheet")
+                        isSheetOpen = true
+                    }) {
+                    Text(
+                        text = "Join Session", style = MaterialTheme.typography.bodyMedium
+                    )
+                }
+                if (isSheetOpen) ModalBottomSheet(
+                    sheetState = sheetState,
+                    onDismissRequest = {
+                        isSheetOpen = false
+                    },
                 ) {
 
-                    Image(
-                        painter = painterResource(id = R.drawable.qrcode),
-                        contentDescription = "Image",
-                        modifier = Modifier.size(300.dp)
-                    )
-
-                    Divider(Modifier.height(3.dp))
-
-                    val sheetState = rememberModalBottomSheetState()
-                    var isSheetOpen by rememberSaveable {
-                        mutableStateOf(false)
-                    }
-                    Button(modifier = Modifier
-                        .fillMaxWidth(),
-                        shape = RectangleShape,
-                        elevation = ButtonDefaults.elevatedButtonElevation(7.dp),
-                        onClick = {
-                            navController.navigate("bottomSheet")
-                            isSheetOpen = true
-                        }) {
-                        Text(
-                            text = "Join Session", style = MaterialTheme.typography.bodyMedium
-                        )
-                    }
-                    if (isSheetOpen) ModalBottomSheet(
-                        sheetState = sheetState,
-                        onDismissRequest = {
-                            isSheetOpen = false
-                        },
-                    ) {
-
-                    }
                 }
             }
         }

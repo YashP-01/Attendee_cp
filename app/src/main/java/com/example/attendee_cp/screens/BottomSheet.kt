@@ -56,7 +56,9 @@ import androidx.compose.runtime.saveable.rememberSaveable
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.RectangleShape
+import androidx.compose.ui.graphics.Shape
 import androidx.compose.ui.graphics.vector.ImageVector
 import androidx.compose.ui.platform.ComposeView
 import androidx.compose.ui.platform.LocalContext
@@ -80,7 +82,7 @@ data class BottomNavigationItem(
 )
 
 
-@SuppressLint("UnusedMaterial3ScaffoldPaddingParameter")
+@SuppressLint("UnusedMaterial3ScaffoldPaddingParameter", "SuspiciousIndentation")
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun BottomSheet(navController: NavController) {
@@ -226,7 +228,8 @@ fun BottomSheet(navController: NavController) {
             ) {
                 if (manualcode) {
                     OutlinedTextField(
-                        modifier = Modifier.fillMaxWidth(),
+                        modifier = Modifier
+                            .fillMaxWidth(),
                         value = title,
                         onValueChange = { text ->
                             title = text
@@ -255,7 +258,8 @@ fun BottomSheet(navController: NavController) {
                         shape = RectangleShape,
 
                         onClick = {
-                            if (btnText == "Submit") navController.navigate("startQuiz") else
+                            if (btnText == "Submit") navController.navigate("startQuiz")
+                            else
                             btnText = "Submit"
                             isStartQuiz = true
                             manualcode = true
@@ -282,15 +286,4 @@ fun BottomSheet(navController: NavController) {
         }
     }
 }
-//@Composable
-//fun ButtonWithTwoClickEvent() {
-//    onClick1={
-//        manualcode = true
-//    };
-//    onClick2={
-//
-//    }
-//
-//}
-
 

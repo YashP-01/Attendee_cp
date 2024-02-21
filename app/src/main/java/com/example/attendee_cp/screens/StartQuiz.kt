@@ -53,7 +53,7 @@ fun StartQuiz(navController: NavController) {
                 topBar = {
                     TopAppBar(title = { /*TODO*/ },
                         navigationIcon = {
-                            IconButton(onClick = { /*TODO*/ }) {
+                            IconButton(onClick = { navController.navigate("bottomSheet") }) {
                                 Icon(
                                     imageVector = Icons.Default.Close,
                                     contentDescription = "close"
@@ -90,8 +90,6 @@ fun StartQuiz(navController: NavController) {
                     text = "15 min")
             }
 
-//            Spacer(modifier = Modifier.height(25.dp))
-
             Text(
                 modifier = Modifier.padding(start = 13.dp),
                 text = "Date: "+ convertLongToTime(System.currentTimeMillis()))
@@ -104,21 +102,16 @@ fun StartQuiz(navController: NavController) {
                     .padding(start = 13.dp),
                 shape = RoundedCornerShape(5.dp),
                 onClick = { Color.Blue }
-
             ) {
                 Text(text = "Start Quiz")
             }
-
                 Button(
-                    modifier = Modifier.padding(start = 130.dp),
+                    modifier = Modifier.padding(start = 100.dp),
                     shape = RoundedCornerShape(5.dp),
                     onClick = { /*TODO*/ }) {
                     Text(text = "Need Help?")
-                    
                 }
             }
-
-
         }
     }
 }
