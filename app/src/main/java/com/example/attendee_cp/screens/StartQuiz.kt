@@ -4,6 +4,7 @@ package com.example.attendee_cp.screens
 
 import android.annotation.SuppressLint
 import androidx.compose.foundation.background
+import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.Spacer
@@ -27,6 +28,7 @@ import androidx.compose.material3.Surface
 import androidx.compose.material3.Text
 import androidx.compose.material3.TopAppBar
 import androidx.compose.runtime.Composable
+import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.RectangleShape
@@ -96,17 +98,18 @@ fun StartQuiz(navController: NavController) {
 
             Spacer(modifier = Modifier.height(25.dp))
 
-            Row {
+            Row(
+                modifier = Modifier.fillMaxWidth().padding(13.dp),
+                horizontalArrangement = Arrangement.SpaceBetween) {
             Button(
-                modifier = Modifier
-                    .padding(start = 13.dp),
+                modifier = Modifier,
                 shape = RoundedCornerShape(5.dp),
-                onClick = { Color.Blue }
+                onClick = { navController.navigate("attendQuiz") }
             ) {
                 Text(text = "Start Quiz")
             }
                 Button(
-                    modifier = Modifier.padding(start = 100.dp),
+                    modifier = Modifier,
                     shape = RoundedCornerShape(5.dp),
                     onClick = { /*TODO*/ }) {
                     Text(text = "Need Help?")

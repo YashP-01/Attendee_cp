@@ -79,6 +79,7 @@ import androidx.lifecycle.LifecycleOwner
 import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
 import androidx.navigation.compose.rememberNavController
+import com.example.attendee_cp.screens.AttendQuiz
 import com.example.attendee_cp.screens.BottomSheet
 import com.example.attendee_cp.screens.MainScreen
 import com.example.attendee_cp.screens.StartQuiz
@@ -115,6 +116,9 @@ fun page1() {
         }
         composable("startQuiz"){
             StartQuiz(navController)
+        }
+        composable("attendQuiz"){
+            AttendQuiz(navController)
         }
     }
 
