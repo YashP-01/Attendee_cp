@@ -57,8 +57,7 @@ import kotlinx.coroutines.delay
 @OptIn(ExperimentalMaterial3Api::class)
 @SuppressLint("UnusedMaterial3ScaffoldPaddingParameter")
 @Composable
-@Preview
-fun AttendQuiz(){
+fun AttendQuiz(navController: NavController){
 
     var time by remember {
         mutableStateOf(0L)
@@ -98,7 +97,7 @@ fun AttendQuiz(){
                         textAlign = TextAlign.Center)
                 },
                     navigationIcon = {
-                        IconButton(onClick = {  }) {
+                        IconButton(onClick = { navController.navigate("startQuiz") }) {
                             Icon(
                                 imageVector = Icons.Default.ArrowBack,
                                 contentDescription = "close"
@@ -286,5 +285,5 @@ fun AttendQuiz(){
 }
 
 
-//navController.navigate("startQuiz")
+
 
