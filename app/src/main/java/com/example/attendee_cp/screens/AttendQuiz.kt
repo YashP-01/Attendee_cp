@@ -3,6 +3,7 @@
 package com.example.attendee_cp.screens
 
 import android.annotation.SuppressLint
+import android.provider.CalendarContract.Colors
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
@@ -15,6 +16,7 @@ import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.shape.CornerSize
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.icons.Icons
+import androidx.compose.material.icons.filled.ArrowBack
 import androidx.compose.material.icons.filled.Close
 import androidx.compose.material.icons.filled.KeyboardArrowLeft
 import androidx.compose.material.icons.filled.KeyboardArrowRight
@@ -27,6 +29,7 @@ import androidx.compose.material3.IconButton
 import androidx.compose.material3.LinearProgressIndicator
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.RadioButton
+import androidx.compose.material3.RadioButtonDefaults
 import androidx.compose.material3.Scaffold
 import androidx.compose.material3.Text
 import androidx.compose.material3.TopAppBar
@@ -37,8 +40,12 @@ import androidx.compose.runtime.setValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.ui.Alignment
+import androidx.compose.ui.ExperimentalComposeUiApi
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.platform.LocalContext
+import androidx.compose.ui.platform.LocalSoftwareKeyboardController
+import androidx.compose.ui.text.TextStyle
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.tooling.preview.Preview
@@ -46,12 +53,27 @@ import androidx.compose.ui.unit.dp
 import androidx.navigation.NavController
 import kotlinx.coroutines.delay
 
+@ExperimentalComposeUiApi
 @OptIn(ExperimentalMaterial3Api::class)
 @SuppressLint("UnusedMaterial3ScaffoldPaddingParameter")
 @Composable
-fun AttendQuiz(navController: NavController){
+@Preview
+fun AttendQuiz(){
 
-    var selectedOption by remember { mutableStateOf(0) }
+    var time by remember {
+        mutableStateOf(0L)
+    }
+    var isRunning by remember {
+        mutableStateOf(false)
+    }
+    var starTime by remember {
+        mutableStateOf(0L)
+    }
+    val context = LocalContext.current
+    val keyboardController = LocalSoftwareKeyboardController.current
+
+    val options = listOf("Row (Arrange.SpaceBetween)", "Row (Arrangement.Space)", "Row (Arrangement.SpaceBet)", "Row (Arrangement.Between)")
+    var selectedOption by remember { mutableStateOf(options[0]) }
 
     var timeProgress by remember {
         mutableStateOf(0.1f)
@@ -76,9 +98,9 @@ fun AttendQuiz(navController: NavController){
                         textAlign = TextAlign.Center)
                 },
                     navigationIcon = {
-                        IconButton(onClick = { navController.navigate("startQuiz") }) {
+                        IconButton(onClick = {  }) {
                             Icon(
-                                imageVector = Icons.Default.Close,
+                                imageVector = Icons.Default.ArrowBack,
                                 contentDescription = "close"
                             )
                         }
@@ -86,12 +108,25 @@ fun AttendQuiz(navController: NavController){
             }) {
 
         }
-        Spacer(modifier = Modifier.height(15.dp))
+
+        Row(
+            modifier = Modifier
+                .fillMaxWidth()
+                .padding(10.dp),
+            horizontalArrangement = Arrangement.End,
+        ) {
+            Text(
+                text = "Time: 10:00",
+                fontWeight = FontWeight.Bold,
+                style = MaterialTheme.typography.titleMedium)
+
+        }
 
         Row(modifier = Modifier.fillMaxWidth(),
             horizontalArrangement = Arrangement.SpaceBetween,
             verticalAlignment = Alignment.CenterVertically) {
             Text(
+                modifier = Modifier.padding(10.dp),
                 text = "Question 1/10",
                 fontWeight = FontWeight.Bold,
                 style = MaterialTheme.typography.titleLarge
@@ -113,118 +148,130 @@ fun AttendQuiz(navController: NavController){
                 }
             }
         }
-
-        Spacer(modifier = Modifier.height(10.dp))
-
         LinearProgressIndicator(modifier = Modifier
+            .padding(10.dp)
             .fillMaxWidth()
             .height(9.dp),
             progress = timeProgress)
-
-        Spacer(modifier = Modifier.height(10.dp))
-        
         Text(
-            modifier = Modifier.padding(5.dp),
+            modifier = Modifier.padding(10.dp),
             text = "Arrange three elements horizontally in a row using Jetpack Compose: a button labeled \"Accept\" aligned to the left edge, an image icon centered in the middle.",
             fontWeight = FontWeight.Bold,
             style = MaterialTheme.typography.titleMedium,
             textAlign = TextAlign.Justify)
 
-        Card(
-            modifier = Modifier
-                .fillMaxWidth()
-                .height(70.dp)
-                .padding(12.dp),
-            shape = RoundedCornerShape(corner = CornerSize(11.dp)),
-            elevation = CardDefaults.cardElevation(
-                defaultElevation = 2.dp
-            )
 
-        ) {
-            Row(modifier = Modifier.fillMaxSize(),
-                Arrangement.SpaceBetween,
-                verticalAlignment = Alignment.CenterVertically) {
-                Text(text = "Row (Arrangement.SpaceBetween)",
-                    fontWeight = FontWeight.Bold,
-                    textAlign = TextAlign.Justify)
-                RadioButton(selected = selectedOption == 0,
-                            onClick = { selectedOption == 0 })
+
+        options.forEach { option ->
+            Card(
+                modifier = Modifier
+                    .fillMaxWidth()
+                    .height(70.dp)
+                    .padding(12.dp),
+                shape = RoundedCornerShape(corner = CornerSize(6.dp)),
+                elevation = CardDefaults.cardElevation(
+                    defaultElevation = 2.dp
+                )
+            ) {
+                Row(
+                    modifier = Modifier.fillMaxSize(),
+                    Arrangement.SpaceBetween,
+                    verticalAlignment = Alignment.CenterVertically
+                ) {
+                    Text(
+                        modifier = Modifier.padding(start = 7.dp),
+                        text = option,
+                        fontWeight = FontWeight.Bold,
+                        textAlign = TextAlign.Justify
+                    )
+                    RadioButton(
+                        selected = selectedOption == option,
+                        onClick = { selectedOption = option})
+                }
+
             }
-
         }
 
-        Card(
-            modifier = Modifier
-                .fillMaxWidth()
-                .height(70.dp)
-                .padding(12.dp),
-            shape = RoundedCornerShape(corner = CornerSize(11.dp)),
-            elevation = CardDefaults.cardElevation(
-                defaultElevation = 2.dp
-            )
-
-        ) {
-            Row(modifier = Modifier.fillMaxSize(),
-                Arrangement.SpaceBetween,
-                verticalAlignment = Alignment.CenterVertically) {
-                Text(text = "Row (Arrangement.SpaceBetween)",
-                    fontWeight = FontWeight.Bold,
-                    textAlign = TextAlign.Justify)
-                RadioButton(selected = selectedOption == 0,
-                    onClick = { selectedOption == 1 })
-            }
-
-        }
-
-        Card(
-            modifier = Modifier
-                .fillMaxWidth()
-                .height(70.dp)
-                .padding(12.dp),
-            shape = RoundedCornerShape(corner = CornerSize(11.dp)),
-            elevation = CardDefaults.cardElevation(
-                defaultElevation = 2.dp
-            )
-
-        ) {
-            Row(modifier = Modifier.fillMaxSize(),
-                Arrangement.SpaceBetween,
-                verticalAlignment = Alignment.CenterVertically) {
-                Text(text = "Row (Arrangement.SpaceBetween)",
-                    fontWeight = FontWeight.Bold,
-                    textAlign = TextAlign.Justify)
-                RadioButton(selected = selectedOption == 0,
-                    onClick = { selectedOption == 2 })
-            }
-
-        }
-
-        Card(
-            modifier = Modifier
-                .fillMaxWidth()
-                .height(70.dp)
-                .padding(12.dp),
-            shape = RoundedCornerShape(corner = CornerSize(11.dp)),
-            elevation = CardDefaults.cardElevation(
-                defaultElevation = 2.dp
-            )
-
-        ) {
-            Row(modifier = Modifier.fillMaxSize(),
-                Arrangement.SpaceBetween,
-                verticalAlignment = Alignment.CenterVertically) {
-                Text(text = "Row (Arrangement.SpaceBetween)",
-                    fontWeight = FontWeight.Bold,
-                    textAlign = TextAlign.Justify)
-                RadioButton(selected = selectedOption == 0,
-                    onClick = { selectedOption == 3 })
-            }
-
-        }
+//        Card(
+//            modifier = Modifier
+//                .fillMaxWidth()
+//                .height(70.dp)
+//                .padding(12.dp),
+//            shape = RoundedCornerShape(corner = CornerSize(11.dp)),
+//            elevation = CardDefaults.cardElevation(
+//                defaultElevation = 2.dp
+//            )
+//
+//        ) {
+//            Row(modifier = Modifier.fillMaxSize(),
+//                Arrangement.SpaceBetween,
+//                verticalAlignment = Alignment.CenterVertically) {
+//                Text(
+//                    modifier = Modifier.padding(start = 4.dp),
+//                    text = "Row (Arrangement.SpaceBetween)",
+//                    fontWeight = FontWeight.Bold,
+//                    textAlign = TextAlign.Justify)
+//                RadioButton(selected = selectedOption == 0,
+//                    onClick = { selectedOption == 0 })
+//            }
+//
+//        }
+//
+//        Card(
+//            modifier = Modifier
+//                .fillMaxWidth()
+//                .height(70.dp)
+//                .padding(12.dp),
+//            shape = RoundedCornerShape(corner = CornerSize(11.dp)),
+//            elevation = CardDefaults.cardElevation(
+//                defaultElevation = 2.dp
+//            )
+//
+//        ) {
+//            Row(modifier = Modifier.fillMaxSize(),
+//                Arrangement.SpaceBetween,
+//                verticalAlignment = Alignment.CenterVertically) {
+//                Text(
+//                    modifier = Modifier.padding(start = 4.dp),
+//                    text = "Row (Arrangement.SpaceBetween)",
+//                    fontWeight = FontWeight.Bold,
+//                    textAlign = TextAlign.Justify)
+//                RadioButton(selected = selectedOption == 0,
+//                    onClick = { selectedOption == 0 })
+//            }
+//
+//        }
+//
+//        Card(
+//            modifier = Modifier
+//                .fillMaxWidth()
+//                .height(70.dp)
+//                .padding(12.dp),
+//            shape = RoundedCornerShape(corner = CornerSize(11.dp)),
+//            elevation = CardDefaults.cardElevation(
+//                defaultElevation = 2.dp
+//            )
+//
+//        ) {
+//            Row(modifier = Modifier.fillMaxSize(),
+//                Arrangement.SpaceBetween,
+//                verticalAlignment = Alignment.CenterVertically) {
+//                Text(
+//                    modifier = Modifier.padding(start = 4.dp),
+//                    text = "Row (Arrangement.SpaceBetween)",
+//                    fontWeight = FontWeight.Bold,
+//                    textAlign = TextAlign.Justify)
+//                RadioButton(selected = selectedOption == 0,
+//                    onClick = { selectedOption == 0 })
+//            }
+//
+//        }
 
         Spacer(modifier = Modifier.height(150.dp))
 
-        Row(modifier = Modifier.fillMaxSize().padding(17.dp),
+        Row(modifier = Modifier
+            .fillMaxSize()
+            .padding(17.dp),
             horizontalArrangement = Arrangement.Center) {
             Button(
                 modifier = Modifier.fillMaxWidth(),
@@ -237,3 +284,7 @@ fun AttendQuiz(navController: NavController){
         }
     }
 }
+
+
+//navController.navigate("startQuiz")
+
