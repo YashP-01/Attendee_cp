@@ -89,7 +89,7 @@ fun StartQuiz(navController: NavController) {
                 )
                 Text(
                     modifier = Modifier.padding(start = 5.dp),
-                    text = "15 min")
+                    text = "10 min")
             }
 
             Text(

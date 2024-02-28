@@ -20,6 +20,7 @@ import androidx.compose.material.icons.filled.ArrowBack
 import androidx.compose.material.icons.filled.Close
 import androidx.compose.material.icons.filled.KeyboardArrowLeft
 import androidx.compose.material.icons.filled.KeyboardArrowRight
+import androidx.compose.material3.AlertDialogDefaults.shape
 import androidx.compose.material3.Button
 import androidx.compose.material3.Card
 import androidx.compose.material3.CardDefaults
@@ -31,6 +32,7 @@ import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.RadioButton
 import androidx.compose.material3.RadioButtonDefaults
 import androidx.compose.material3.Scaffold
+import androidx.compose.material3.Shapes
 import androidx.compose.material3.Text
 import androidx.compose.material3.TopAppBar
 import androidx.compose.runtime.Composable
@@ -42,6 +44,7 @@ import androidx.compose.runtime.remember
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.ExperimentalComposeUiApi
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.platform.LocalSoftwareKeyboardController
@@ -52,6 +55,7 @@ import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.navigation.NavController
 import kotlinx.coroutines.delay
+import kotlin.math.round
 
 @ExperimentalComposeUiApi
 @OptIn(ExperimentalMaterial3Api::class)
@@ -59,17 +63,15 @@ import kotlinx.coroutines.delay
 @Composable
 fun AttendQuiz(navController: NavController){
 
-    var time by remember {
-        mutableStateOf(0L)
+    var remainingTime by remember { mutableStateOf(10 * 60L) } // 10 minutes in seconds
+    LaunchedEffect(Unit) {
+        repeat(remainingTime.toInt()) { // Repeat for the remaining time
+            delay(1000) // Update every second
+            remainingTime-- // Decrement remaining time
+        }
     }
-    var isRunning by remember {
-        mutableStateOf(false)
-    }
-    var starTime by remember {
-        mutableStateOf(0L)
-    }
-    val context = LocalContext.current
-    val keyboardController = LocalSoftwareKeyboardController.current
+    val minutes = remainingTime / 60
+    val seconds = remainingTime % 60
 
     val options = listOf("Row (Arrange.SpaceBetween)", "Row (Arrangement.Space)", "Row (Arrangement.SpaceBet)", "Row (Arrangement.Between)")
     var selectedOption by remember { mutableStateOf(options[0]) }
@@ -115,17 +117,14 @@ fun AttendQuiz(navController: NavController){
             horizontalArrangement = Arrangement.End,
         ) {
             Text(
-                text = "Time: 10:00",
-                fontWeight = FontWeight.Bold,
-                style = MaterialTheme.typography.titleMedium)
-
+                text = "TimeOut : $minutes:${"%02d".format(seconds)}", textAlign = TextAlign.Center, fontWeight = FontWeight.Bold)
         }
 
         Row(modifier = Modifier.fillMaxWidth(),
             horizontalArrangement = Arrangement.SpaceBetween,
             verticalAlignment = Alignment.CenterVertically) {
             Text(
-                modifier = Modifier.padding(10.dp),
+                modifier = Modifier.padding(start = 20.dp),
                 text = "Question 1/10",
                 fontWeight = FontWeight.Bold,
                 style = MaterialTheme.typography.titleLarge
@@ -148,12 +147,15 @@ fun AttendQuiz(navController: NavController){
             }
         }
         LinearProgressIndicator(modifier = Modifier
-            .padding(10.dp)
+            .clip(shape = RoundedCornerShape(9.dp))
+            .padding(start = 20.dp, end = 20.dp, top = 10.dp)
             .fillMaxWidth()
-            .height(9.dp),
-            progress = timeProgress)
+            .height(10.dp),
+//            shape = RoundedCornerShape(7.dp),
+            progress = timeProgress,
+        )
         Text(
-            modifier = Modifier.padding(10.dp),
+            modifier = Modifier.padding(21.dp),
             text = "Arrange three elements horizontally in a row using Jetpack Compose: a button labeled \"Accept\" aligned to the left edge, an image icon centered in the middle.",
             fontWeight = FontWeight.Bold,
             style = MaterialTheme.typography.titleMedium,
@@ -166,8 +168,8 @@ fun AttendQuiz(navController: NavController){
                 modifier = Modifier
                     .fillMaxWidth()
                     .height(70.dp)
-                    .padding(12.dp),
-                shape = RoundedCornerShape(corner = CornerSize(6.dp)),
+                    .padding(start = 20.dp, end = 20.dp, bottom = 10.dp),
+                shape = RoundedCornerShape(corner = CornerSize(7.dp)),
                 elevation = CardDefaults.cardElevation(
                     defaultElevation = 2.dp
                 )
@@ -191,90 +193,15 @@ fun AttendQuiz(navController: NavController){
             }
         }
 
-//        Card(
-//            modifier = Modifier
-//                .fillMaxWidth()
-//                .height(70.dp)
-//                .padding(12.dp),
-//            shape = RoundedCornerShape(corner = CornerSize(11.dp)),
-//            elevation = CardDefaults.cardElevation(
-//                defaultElevation = 2.dp
-//            )
-//
-//        ) {
-//            Row(modifier = Modifier.fillMaxSize(),
-//                Arrangement.SpaceBetween,
-//                verticalAlignment = Alignment.CenterVertically) {
-//                Text(
-//                    modifier = Modifier.padding(start = 4.dp),
-//                    text = "Row (Arrangement.SpaceBetween)",
-//                    fontWeight = FontWeight.Bold,
-//                    textAlign = TextAlign.Justify)
-//                RadioButton(selected = selectedOption == 0,
-//                    onClick = { selectedOption == 0 })
-//            }
-//
-//        }
-//
-//        Card(
-//            modifier = Modifier
-//                .fillMaxWidth()
-//                .height(70.dp)
-//                .padding(12.dp),
-//            shape = RoundedCornerShape(corner = CornerSize(11.dp)),
-//            elevation = CardDefaults.cardElevation(
-//                defaultElevation = 2.dp
-//            )
-//
-//        ) {
-//            Row(modifier = Modifier.fillMaxSize(),
-//                Arrangement.SpaceBetween,
-//                verticalAlignment = Alignment.CenterVertically) {
-//                Text(
-//                    modifier = Modifier.padding(start = 4.dp),
-//                    text = "Row (Arrangement.SpaceBetween)",
-//                    fontWeight = FontWeight.Bold,
-//                    textAlign = TextAlign.Justify)
-//                RadioButton(selected = selectedOption == 0,
-//                    onClick = { selectedOption == 0 })
-//            }
-//
-//        }
-//
-//        Card(
-//            modifier = Modifier
-//                .fillMaxWidth()
-//                .height(70.dp)
-//                .padding(12.dp),
-//            shape = RoundedCornerShape(corner = CornerSize(11.dp)),
-//            elevation = CardDefaults.cardElevation(
-//                defaultElevation = 2.dp
-//            )
-//
-//        ) {
-//            Row(modifier = Modifier.fillMaxSize(),
-//                Arrangement.SpaceBetween,
-//                verticalAlignment = Alignment.CenterVertically) {
-//                Text(
-//                    modifier = Modifier.padding(start = 4.dp),
-//                    text = "Row (Arrangement.SpaceBetween)",
-//                    fontWeight = FontWeight.Bold,
-//                    textAlign = TextAlign.Justify)
-//                RadioButton(selected = selectedOption == 0,
-//                    onClick = { selectedOption == 0 })
-//            }
-//
-//        }
-
-        Spacer(modifier = Modifier.height(150.dp))
+        Spacer(modifier = Modifier.height(70.dp))
 
         Row(modifier = Modifier
             .fillMaxSize()
             .padding(17.dp),
             horizontalArrangement = Arrangement.Center) {
             Button(
-                modifier = Modifier.fillMaxWidth(),
-                shape = RoundedCornerShape(5.dp),
+                modifier = Modifier.fillMaxWidth().height(57.dp),
+                shape = RoundedCornerShape(45.dp),
                 onClick = { /*TODO*/ }) {
                 Text(text = "Continue",
                     fontWeight = FontWeight.Bold,

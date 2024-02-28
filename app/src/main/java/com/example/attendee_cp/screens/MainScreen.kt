@@ -5,6 +5,7 @@ import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
+import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxHeight
 import androidx.compose.foundation.layout.fillMaxSize
@@ -45,6 +46,7 @@ import androidx.compose.ui.draw.shadow
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.RectangleShape
 import androidx.compose.ui.res.painterResource
+import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.navigation.NavController
@@ -100,7 +102,7 @@ fun MainScreen(navController: NavController) {
                 }
             Column(
                 modifier = Modifier
-                    .fillMaxHeight()
+                    .height(400.dp)
                     .width(400.dp)
                     .padding(15.dp),
                 verticalArrangement = Arrangement.Top,
@@ -138,6 +140,54 @@ fun MainScreen(navController: NavController) {
                 ) {
 
                 }
+            }
+
+            Spacer(modifier = Modifier.height(50.dp))
+
+
+            Row(
+                verticalAlignment = Alignment.CenterVertically
+            ) {
+                Text(
+                    text = "• ",
+                    fontWeight = FontWeight.Bold,
+                    style = MaterialTheme.typography.titleLarge,
+                    modifier = Modifier.padding(start = 10.dp, end = 10.dp) // Adjust the spacing between bullet point and text
+                )
+                Text(text = "Review your quiz status.")
+            }
+            Row(
+                verticalAlignment = Alignment.CenterVertically
+            ) {
+                Text(
+                    text = "• ",
+                    fontWeight = FontWeight.Bold,
+                    style = MaterialTheme.typography.titleLarge,
+                    modifier = Modifier.padding(start = 10.dp, end = 10.dp) // Adjust the spacing between bullet point and text
+                )
+                Text(text = "Check your assignment submission status.")
+            }
+            Row(
+                verticalAlignment = Alignment.CenterVertically
+            ) {
+                Text(
+                    text = "• ",
+                    fontWeight = FontWeight.Bold,
+                    style = MaterialTheme.typography.titleLarge,
+                    modifier = Modifier.padding(start = 10.dp, end = 10.dp) // Adjust the spacing between bullet point and text
+                )
+                Text(text = "Check your attendance.")
+            }
+            Row(
+                verticalAlignment = Alignment.CenterVertically
+            ) {
+                Text(
+                    text = "• ",
+                    fontWeight = FontWeight.Bold,
+                    style = MaterialTheme.typography.titleLarge,
+                    modifier = Modifier.padding(start = 10.dp, end = 10.dp) // Adjust the spacing between bullet point and text
+                )
+                Text(text = "Review your quiz status.")
             }
         }
     }
