@@ -5,7 +5,9 @@ package com.example.attendee_cp.screens
 import android.annotation.SuppressLint
 import android.provider.CalendarContract.Colors
 import androidx.compose.foundation.background
+import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Arrangement
+import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.Spacer
@@ -46,6 +48,10 @@ import androidx.compose.ui.ExperimentalComposeUiApi
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.graphics.Color.Companion.Blue
+import androidx.compose.ui.graphics.Color.Companion.Gray
+import androidx.compose.ui.graphics.Color.Companion.Green
+import androidx.compose.ui.graphics.Color.Companion.White
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.platform.LocalSoftwareKeyboardController
 import androidx.compose.ui.text.TextStyle
@@ -63,6 +69,19 @@ import kotlin.math.round
 @Composable
 fun AttendQuiz(navController: NavController){
 
+    var clicked by remember { mutableStateOf(false) }
+
+    var color by remember { mutableStateOf(Color.Green) } // Initial color
+    var timeProgress by remember {
+        mutableStateOf(0.1f)
+    }
+    LaunchedEffect(timeProgress){
+        while (timeProgress < 1f){
+            delay(1500L)
+            timeProgress += 0.1f
+        }
+    }
+
     var remainingTime by remember { mutableStateOf(10 * 60L) } // 10 minutes in seconds
     LaunchedEffect(Unit) {
         repeat(remainingTime.toInt()) { // Repeat for the remaining time
@@ -76,15 +95,7 @@ fun AttendQuiz(navController: NavController){
     val options = listOf("Row (Arrange.SpaceBetween)", "Row (Arrangement.Space)", "Row (Arrangement.SpaceBet)", "Row (Arrangement.Between)")
     var selectedOption by remember { mutableStateOf(options[0]) }
 
-    var timeProgress by remember {
-        mutableStateOf(0.1f)
-    }
-    LaunchedEffect(timeProgress){
-        while (timeProgress < 1f){
-            delay(1000L)
-            timeProgress += 0.1f
-        }
-    }
+
 
     Column(modifier = Modifier
         .fillMaxSize()
@@ -146,14 +157,29 @@ fun AttendQuiz(navController: NavController){
                 }
             }
         }
-        LinearProgressIndicator(modifier = Modifier
-            .clip(shape = RoundedCornerShape(9.dp))
-            .padding(start = 20.dp, end = 20.dp, top = 10.dp)
-            .fillMaxWidth()
-            .height(10.dp),
+
+        Box (modifier = Modifier.clip(shape = RoundedCornerShape(17.dp))) {
+            LaunchedEffect(Unit) {
+                repeat(3) { // Repeat 3 times
+                    delay(6000) // Change color every 3 seconds
+                    color = when (color) {
+                        Color.Green -> Color.Yellow
+                        Color.Yellow -> Color.Red
+                        else -> Color.Red
+                    }
+                }
+            }
+            LinearProgressIndicator(
+                modifier = Modifier
+ //                   .clip(shape = RoundedCornerShape(9.dp))
+                    .padding(start = 20.dp, end = 20.dp, top = 10.dp)
+                    .fillMaxWidth()
+                    .height(10.dp),
+                color = color, // Use the current color
 //            shape = RoundedCornerShape(7.dp),
-            progress = timeProgress,
-        )
+                progress = timeProgress,
+            )
+        }
         Text(
             modifier = Modifier.padding(21.dp),
             text = "Arrange three elements horizontally in a row using Jetpack Compose: a button labeled \"Accept\" aligned to the left edge, an image icon centered in the middle.",
@@ -168,7 +194,13 @@ fun AttendQuiz(navController: NavController){
                 modifier = Modifier
                     .fillMaxWidth()
                     .height(70.dp)
-                    .padding(start = 20.dp, end = 20.dp, bottom = 10.dp),
+                    .padding(start = 20.dp, end = 20.dp, bottom = 10.dp)
+                    .clickable { selectedOption = option },
+                colors = CardDefaults.cardColors(
+                    containerColor =
+                    if (clicked) Green else White
+                    ),
+//                color = if (clicked) Color.Red else Color.Gray,
                 shape = RoundedCornerShape(corner = CornerSize(7.dp)),
                 elevation = CardDefaults.cardElevation(
                     defaultElevation = 2.dp
@@ -200,7 +232,9 @@ fun AttendQuiz(navController: NavController){
             .padding(17.dp),
             horizontalArrangement = Arrangement.Center) {
             Button(
-                modifier = Modifier.fillMaxWidth().height(57.dp),
+                modifier = Modifier
+                    .fillMaxWidth()
+                    .height(57.dp),
                 shape = RoundedCornerShape(45.dp),
                 onClick = { /*TODO*/ }) {
                 Text(text = "Continue",
@@ -210,6 +244,7 @@ fun AttendQuiz(navController: NavController){
         }
     }
 }
+
 
 
 

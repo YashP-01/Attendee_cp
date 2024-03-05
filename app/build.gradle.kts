@@ -68,12 +68,12 @@ dependencies {
     debugImplementation("androidx.compose.ui:ui-test-manifest")
 
     // Activity Compose
-    implementation ("androidx.activity:activity-compose:1.4.0")
+    implementation ("androidx.activity:activity-compose:1.8.2")
 
     // CameraX
-    implementation ("androidx.camera:camera-camera2:1.0.2")
-    implementation ("androidx.camera:camera-lifecycle:1.0.2")
-    implementation ("androidx.camera:camera-view:1.0.0-alpha31")
+    implementation ("androidx.camera:camera-camera2:1.3.1")
+    implementation ("androidx.camera:camera-lifecycle:1.3.1")
+    implementation ("androidx.camera:camera-view:1.3.1")
 
     // Zxing
     implementation ("com.google.zxing:core:3.3.3")

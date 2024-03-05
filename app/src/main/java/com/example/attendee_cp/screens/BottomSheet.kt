@@ -81,7 +81,6 @@ data class BottomNavigationItem(
     val badgeCount: Int? = null
 )
 
-
 @SuppressLint("UnusedMaterial3ScaffoldPaddingParameter", "SuspiciousIndentation")
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
@@ -92,6 +91,7 @@ fun BottomSheet(navController: NavController) {
         mutableStateOf(false)
     }
     var btnText by remember { mutableStateOf("Enter Code") }
+    var btnText1 by remember { mutableStateOf("Join Quiz") }
 
 //    val items = listOf(
 //        BottomNavigationItem(
@@ -198,9 +198,10 @@ fun BottomSheet(navController: NavController) {
                         style = MaterialTheme.typography.bodyMedium,
                         fontWeight = FontWeight.Bold,
                         modifier = Modifier
-                            .width(50.dp)
-                            .padding(32.dp)
+                            .fillMaxWidth()
+                            .padding(40.dp)
                     )
+//                    if (code == "yyyy") navController.navigate("startQuiz")
                 }
 //        Scaffold (
 //            bottomBar = {

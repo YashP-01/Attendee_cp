@@ -157,7 +157,7 @@ fun MainScreen(navController: NavController) {
                 Text(text = "Review your quiz status.")
             }
             Row(
-                verticalAlignment = Alignment.CenterVertically
+                verticalAlignment = Alignment.Top
             ) {
                 Text(
                     text = "• ",
